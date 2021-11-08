@@ -1,0 +1,14 @@
+input UpdateReaderInput {
+  username: String!
+  email: String
+  firstName: String
+  lastName: String
+  gender: String
+  birthday: String
+  phoneNumber: String
+  homeAddress: String
+  province: String
+  postcode: String
+  securityQuestion: String
+  securityAnswer: String
+}

@@ -1,0 +1,6 @@
+input BookCommentInput {
+  bookID: ID!
+  readerName: String!
+  title: String
+  comment: String
+}

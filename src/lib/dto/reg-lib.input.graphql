@@ -1,0 +1,10 @@
+input RegLibInput {
+  username: String!
+  password: String!
+  confirmPassword: String!
+  email: String!
+  role: String!
+  firstName: String
+  lastName: String
+  phoneNumber: String
+}

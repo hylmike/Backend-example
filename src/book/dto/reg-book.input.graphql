@@ -1,0 +1,19 @@
+input BookInput {
+  bookTitle: String!
+  isbnCode: String
+  category: String!
+  format: String!
+  author: String
+  language: String!
+  publisher: String
+  publishDate: String
+  purchaseDate: String
+  coverPic: String!
+  bookFile: String!
+  price: String
+  desc: String
+  keywords: String
+  initialScore: String
+  creator: String!
+  isActive: String!
+}

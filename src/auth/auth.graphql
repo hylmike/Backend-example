@@ -1,0 +1,4 @@
+type Mutation {
+  readerLogout: Reader
+  libLogout: Lib
+}

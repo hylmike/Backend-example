@@ -1,0 +1,7 @@
+input SearchBookInput {
+  format: String!
+  category: String
+  bookTitle: String
+  author: String
+  publishYear: String
+}

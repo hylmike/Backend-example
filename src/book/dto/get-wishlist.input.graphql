@@ -1,0 +1,4 @@
+input GetWishlistInput {
+  format: String!
+  readerName: String!
+}

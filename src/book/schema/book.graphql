@@ -1,0 +1,83 @@
+type Book {
+  _id: ID!
+  bookTitle: String!
+  isbnCode: String
+  category: String!
+  format: String!
+  author: String
+  language: String!
+  publisher: String
+  publishDate: DateTime
+  purchaseDate: DateTime
+  price: Float
+  coverPic: String!
+  bookFile: String!
+  desc: String
+  keywords: String
+  isActive: Boolean!
+  createDate: DateTime!
+  creator: String!
+  readTimes: Int!
+  readDuration: Int!
+  initialScore: Int!
+  popularScore: Int!
+  comments: [String]
+  readHistory: [String]
+}
+
+type BookReadRecord {
+  _id: ID!
+  book: ID!
+  readerID: ID!
+  startTime: DateTime!
+  duration: Int!
+}
+
+type BookComment {
+  _id: ID
+  book: ID
+  readerName: String
+  title: String
+  comment: String
+  createTime: DateTime
+}
+
+type BookWish {
+  _id: ID
+  bookTitle: String
+  language: String
+  format: String
+  creator: String
+  createTime: DateTime
+  status: String
+}
+
+type BookInventory {
+  category: String!
+  count: Int!
+}
+
+type Query {
+  book(id: ID!): Book
+  findAllBooks(format: String!): [Book]
+  searchBookList(searchBookData: SearchBookInput!): [Book]
+  searchBook(sval: String!): [Book]
+  findHotBooks(num: Int!): [Book]
+  sumBookInventory: BookInventory
+  getReadHistory(bookID: ID!): [BookReadRecord]
+  getBookComments(bookID: ID!): [BookComment]
+  getUnfulfilWishList: [BookWish]
+  getWishList(getWishData: GetWishlistInput!): [BookWish]
+  getBookWish(wishID: ID!): BookWish
+}
+
+type Mutation {
+  registerBook(regBookData: BookInput!): Book
+  updateBook(updateBookData: BookInput!): Book
+  delBook(id: ID!): Book
+  addReadRecord(recordData: ReadRecordInput!): BookReadRecord
+  addBookComment(bookCommentData: BookCommentInput!): BookComment
+  addBookWish(addWishData: CreateWishInput!): BookWish
+  updateWishStatus(updateWishData: UpdateWishInput!): BookWish
+  delWish(id: ID!): BookWish
+}

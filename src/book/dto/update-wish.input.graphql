@@ -1,0 +1,4 @@
+input UpdateWishInput {
+  wishID: ID!
+  status: String!
+}

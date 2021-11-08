@@ -1,0 +1,26 @@
+type Lib {
+  _id: String!
+  username: String!
+  password: String!
+  email: String!
+  role: String!
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  registerDate: DateTime!
+  currentRefreshToken: String
+  isActive: Boolean!
+}
+
+type Query {
+  allLibrarians: [Lib]
+  allAdmins: [Lib]
+  lib(id: ID!): Lib
+}
+
+type Mutation {
+  registerLib(regLibData: RegLibInput!): Lib
+  updateLib(updateLibData: UpdateLibInput!): Lib
+  changeLibPwd(changePwdData: ChangePwdInput!): Lib
+  delLib(id: ID!): Lib
+}

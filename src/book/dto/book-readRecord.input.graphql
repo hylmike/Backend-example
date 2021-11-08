@@ -1,0 +1,7 @@
+input ReadRecordInput {
+  bookID: ID!
+  readerID: ID!
+  startTime: DateTime!
+  currentPage: Int!
+  duration: Int!
+}

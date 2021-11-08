@@ -1,0 +1,9 @@
+input UpdateLibInput {
+  username: String!
+  email: String
+  role: String
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  isActive: String
+}

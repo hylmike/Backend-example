@@ -1,0 +1,5 @@
+input ChangePwdInput {
+  username: String!
+  currentPwd: String!
+  newPwd: String!
+}

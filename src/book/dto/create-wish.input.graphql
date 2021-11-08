@@ -1,0 +1,6 @@
+input CreateWishInput {
+  bookTitle: String!
+  language: String
+  format: String!
+  creator: String!
+}
