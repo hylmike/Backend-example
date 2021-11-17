@@ -46,7 +46,7 @@ export class LibAuthService {
       .select('+password')
       .exec();
     if (!lib) {
-      this.logger.info(`Can't find ${lib.role} ${username} in database`);
+      this.logger.error(`Can't find ${username} in database`);
       return null;
     }
     return lib;
@@ -79,7 +79,7 @@ export class LibAuthService {
   async getRefreshTokenById(libID: string) {
     const lib = await this.libModel
       .findById(libID)
-      .select('+refreshToken')
+      .select('+currentRefreshToken')
       .exec();
     if (!lib) {
       this.logger.warn(
@@ -121,7 +121,7 @@ export class LibAuthService {
       expiresIn: process.env.REFRESH_TOKEN_TIMER,
     });
     const maxAge = +process.env.REFRESH_TOKEN_TIMER.slice(0, -1);
-    const cookieRefreshToken = `Refresh=${refreshToken}; HttpOnly; Path=/api/auth/refreshtoken; Max-Age=${maxAge}`;
+    const cookieRefreshToken = `Refresh=${refreshToken}; HttpOnly; Path=/api/auth/lib/refreshtoken; Max-Age=${maxAge}`;
     this.logger.info(`Success setup refresh token for lib ${libID}`);
     return [cookieRefreshToken, refreshToken];
   }
@@ -159,13 +159,13 @@ export class LibAuthService {
 
   async logout(request) {
     const libID = request.user._id;
-    await this.libModel.updateOne(
+    const lib = await this.libModel.findOneAndUpdate(
       { _id: libID },
       { currentRefreshToken: null },
     );
     const deleteCookie = 'Refresh=; HttpOnly; path=/api; Max-Age=0';
     request.res.setHeader('Set-Cookie', deleteCookie);
-    this.logger.info(`Success logout for ${request.user.role} ${libID}`);
-    return libID;
+    this.logger.info(`Success logout for ${request.user.role} ${lib.username}`);
+    return lib;
   }
 }

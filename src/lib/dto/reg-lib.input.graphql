@@ -4,7 +4,7 @@ input RegLibInput {
   confirmPassword: String!
   email: String!
   role: String!
-  firstName: String
-  lastName: String
-  phoneNumber: String
+  firstName: String!
+  lastName: String!
+  phoneNumber: String!
 }

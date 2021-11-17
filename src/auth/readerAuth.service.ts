@@ -14,7 +14,7 @@ export class ReaderAuthService {
     @InjectModel('Reader') private readonly readerModel: Model<ReaderDocument>,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async validateReader(username: string, password: string) {
     const reader = await this.getByName(username);
@@ -74,7 +74,7 @@ export class ReaderAuthService {
   async getRefreshTokenById(readerID: string) {
     const reader = await this.readerModel
       .findById(readerID)
-      .select('+refreshToken')
+      .select('+currentRefreshToken')
       .exec();
     if (!reader) {
       this.logger.warn(
@@ -116,7 +116,7 @@ export class ReaderAuthService {
       expiresIn: process.env.REFRESH_TOKEN_TIMER,
     });
     const maxAge = +process.env.REFRESH_TOKEN_TIMER.slice(0, -1);
-    const cookieRefreshToken = `Refresh=${refreshToken}; HttpOnly; Path=/api/auth/refreshtoken; Max-Age=${maxAge}`;
+    const cookieRefreshToken = `Refresh=${refreshToken}; HttpOnly; Path=/api/auth/reader/refreshtoken; Max-Age=${maxAge}`;
     this.logger.info(`Success setup refresh token for reader ${readerID}`);
     return [cookieRefreshToken, refreshToken];
   }

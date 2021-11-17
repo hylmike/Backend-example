@@ -41,9 +41,9 @@ export class LibResolver {
   @UseGuards(LibGqlJwtAuthGuard)
   @Mutation()
   async changeLibPwd(
-    @Args('changePwdData') changePwdData: ChangePwdInput,
+    @Args('changeLibPwdData') changeLibPwdData: ChangePwdInput,
   ): Promise<Lib> {
-    return this.libService.changePwd(changePwdData);
+    return this.libService.changePwd(changeLibPwdData);
   }
 
   @UseGuards(LibGqlJwtAuthGuard)

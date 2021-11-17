@@ -4,9 +4,9 @@ type Lib {
   password: String!
   email: String!
   role: String!
-  firstName: String
-  lastName: String
-  phoneNumber: String
+  firstName: String!
+  lastName: String!
+  phoneNumber: String!
   registerDate: DateTime!
   currentRefreshToken: String
   isActive: Boolean!
@@ -21,6 +21,6 @@ type Query {
 type Mutation {
   registerLib(regLibData: RegLibInput!): Lib
   updateLib(updateLibData: UpdateLibInput!): Lib
-  changeLibPwd(changePwdData: ChangePwdInput!): Lib
+  changeLibPwd(changeLibPwdData: ChangePwdInput!): Lib
   delLib(id: ID!): Lib
 }

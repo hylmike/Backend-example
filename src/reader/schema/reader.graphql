@@ -2,12 +2,12 @@ scalar DateTime
 
 type ReaderProfile {
   _id: ID!
-  firstName: String
-  lastName: String
-  gender: String
-  birthday: DateTime
-  phoneNumber: String
-  address: Address
+  firstName: String!
+  lastName: String!
+  gender: String!
+  birthday: DateTime!
+  phoneNumber: String!
+  address: Address!
   readTimes: Int!
   readDuration: Int!
   score: Int!
@@ -24,41 +24,41 @@ type Reader {
   registerDate: DateTime!
   currentRefreshToken: String
   favouriteBook: [FavouriteBook]
-  readerProfile: ReaderProfile
+  readerProfile: ReaderProfile!
   readHistory: [ReaderReadHistory]
 }
 
 type ReaderReadHistory {
-  _id: ID
-  bookID: ID
-  currentPage: Int
-  startTime: DateTime
-  lastReadTime: DateTime
-  readTimes: Int
-  readDuration: Int
+  _id: ID!
+  bookID: ID!
+  currentPage: Int!
+  startTime: DateTime!
+  lastReadTime: DateTime!
+  readTimes: Int!
+  readDuration: Int!
 }
 
 type FavouriteBook {
-  bookID: ID
-  createDate: DateTime
+  bookID: ID!
+  createDate: DateTime!
 }
 
 type Address {
-  homeAddress: String
-  province: String
-  postcode: String
+  homeAddress: String!
+  province: String!
+  postcode: String!
 }
 
 type AccessToken {
-  tokenInfo: String
+  tokenInfo: String!
 }
 
 type Token {
-  _id: ID
-  readerName: String
-  email: String
-  token: String
-  createTime: DateTime
+  _id: ID!
+  readerName: String!
+  email: String!
+  token: String!
+  createTime: DateTime!
 }
 
 type Query {
@@ -69,6 +69,6 @@ type Query {
 type Mutation {
   registerReader(regReaderData: RegReaderInput!): Reader
   updateReader(updateReaderData: UpdateReaderInput!): Reader
-  changeReaderPwd(changePwdData: ChangePwdInput!): Reader
+  changeReaderPwd(changeReaderPwdData: ChangePwdInput!): Reader
   delReader(id: ID!): Reader
 }

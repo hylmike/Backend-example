@@ -32,6 +32,7 @@ import { LibModule } from './lib/lib.module';
     }),
     GraphQLModule.forRoot({
       typePaths: ['./src/**/*.graphql'],
+      cors: false,
       resolvers: { DateTime: GraphQLISODateTime },
       context: ({ req }) => ({ req }),
     }),

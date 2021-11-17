@@ -1,19 +1,19 @@
 type Book {
   _id: ID!
   bookTitle: String!
-  isbnCode: String
+  isbnCode: String!
   category: String!
   format: String!
-  author: String
+  author: String!
   language: String!
-  publisher: String
-  publishDate: DateTime
-  purchaseDate: DateTime
-  price: Float
+  publisher: String!
+  publishDate: DateTime!
+  purchaseDate: DateTime!
+  price: Float!
   coverPic: String!
   bookFile: String!
-  desc: String
-  keywords: String
+  desc: String!
+  keywords: String!
   isActive: Boolean!
   createDate: DateTime!
   creator: String!
@@ -34,22 +34,22 @@ type BookReadRecord {
 }
 
 type BookComment {
-  _id: ID
-  book: ID
-  readerName: String
-  title: String
-  comment: String
-  createTime: DateTime
+  _id: ID!
+  book: ID!
+  readerName: String!
+  title: String!
+  comment: String!
+  createTime: DateTime!
 }
 
 type BookWish {
-  _id: ID
-  bookTitle: String
-  language: String
-  format: String
-  creator: String
-  createTime: DateTime
-  status: String
+  _id: ID!
+  bookTitle: String!
+  language: String!
+  format: String!
+  creator: String!
+  createTime: DateTime!
+  status: String!
 }
 
 type BookInventory {

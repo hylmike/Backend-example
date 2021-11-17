@@ -42,8 +42,10 @@ export class ReaderResolver {
 
   @UseGuards(ReaderGqlJwtAuthGuard)
   @Mutation()
-  changeReaderPwd(@Args('changePwdData') changePwdData: ChangePwdInput) {
-    return this.readerService.changePwd(changePwdData);
+  changeReaderPwd(
+    @Args('changeReaderPwdData') changeReaderPwdData: ChangePwdInput,
+  ) {
+    return this.readerService.changePwd(changeReaderPwdData);
   }
 
   @Mutation()

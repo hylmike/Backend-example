@@ -34,19 +34,6 @@ export interface GetWishlistInput {
     readerName: string;
 }
 
-export interface SearchBookInput {
-    format: string;
-    category?: Nullable<string>;
-    bookTitle?: Nullable<string>;
-    author?: Nullable<string>;
-    publishYear?: Nullable<string>;
-}
-
-export interface UpdateWishInput {
-    wishID: string;
-    status: string;
-}
-
 export interface BookInput {
     bookTitle: string;
     isbnCode?: Nullable<string>;
@@ -67,15 +54,28 @@ export interface BookInput {
     isActive: string;
 }
 
+export interface SearchBookInput {
+    format: string;
+    category?: Nullable<string>;
+    bookTitle?: Nullable<string>;
+    author?: Nullable<string>;
+    publishYear?: Nullable<string>;
+}
+
+export interface UpdateWishInput {
+    wishID: string;
+    status: string;
+}
+
 export interface RegLibInput {
     username: string;
     password: string;
     confirmPassword: string;
     email: string;
     role: string;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    phoneNumber?: Nullable<string>;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
 }
 
 export interface UpdateLibInput {
@@ -99,31 +99,31 @@ export interface RegReaderInput {
     password: string;
     confirmPassword: string;
     email: string;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    gender?: Nullable<string>;
-    birthday?: Nullable<string>;
-    phoneNumber?: Nullable<string>;
-    homeAddress?: Nullable<string>;
-    province?: Nullable<string>;
-    postcode?: Nullable<string>;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    birthday: string;
+    phoneNumber: string;
+    homeAddress: string;
+    province: string;
+    postcode: string;
     securityQuestion: string;
     securityAnswer: string;
 }
 
 export interface UpdateReaderInput {
     username: string;
-    email?: Nullable<string>;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    gender?: Nullable<string>;
-    birthday?: Nullable<string>;
-    phoneNumber?: Nullable<string>;
-    homeAddress?: Nullable<string>;
-    province?: Nullable<string>;
-    postcode?: Nullable<string>;
-    securityQuestion?: Nullable<string>;
-    securityAnswer?: Nullable<string>;
+    email: string;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    birthday: string;
+    phoneNumber: string;
+    homeAddress: string;
+    province: string;
+    postcode: string;
+    securityQuestion: string;
+    securityAnswer: string;
 }
 
 export interface IQuery {
@@ -159,30 +159,30 @@ export interface IMutation {
     delWish(id: string): Nullable<BookWish> | Promise<Nullable<BookWish>>;
     registerLib(regLibData: RegLibInput): Nullable<Lib> | Promise<Nullable<Lib>>;
     updateLib(updateLibData: UpdateLibInput): Nullable<Lib> | Promise<Nullable<Lib>>;
-    changeLibPwd(changePwdData: ChangePwdInput): Nullable<Lib> | Promise<Nullable<Lib>>;
+    changeLibPwd(changeLibPwdData: ChangePwdInput): Nullable<Lib> | Promise<Nullable<Lib>>;
     delLib(id: string): Nullable<Lib> | Promise<Nullable<Lib>>;
     registerReader(regReaderData: RegReaderInput): Nullable<Reader> | Promise<Nullable<Reader>>;
     updateReader(updateReaderData: UpdateReaderInput): Nullable<Reader> | Promise<Nullable<Reader>>;
-    changeReaderPwd(changePwdData: ChangePwdInput): Nullable<Reader> | Promise<Nullable<Reader>>;
+    changeReaderPwd(changeReaderPwdData: ChangePwdInput): Nullable<Reader> | Promise<Nullable<Reader>>;
     delReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
 }
 
 export interface Book {
     _id: string;
     bookTitle: string;
-    isbnCode?: Nullable<string>;
+    isbnCode: string;
     category: string;
     format: string;
-    author?: Nullable<string>;
+    author: string;
     language: string;
-    publisher?: Nullable<string>;
-    publishDate?: Nullable<DateTime>;
-    purchaseDate?: Nullable<DateTime>;
-    price?: Nullable<number>;
+    publisher: string;
+    publishDate: DateTime;
+    purchaseDate: DateTime;
+    price: number;
     coverPic: string;
     bookFile: string;
-    desc?: Nullable<string>;
-    keywords?: Nullable<string>;
+    desc: string;
+    keywords: string;
     isActive: boolean;
     createDate: DateTime;
     creator: string;
@@ -203,22 +203,22 @@ export interface BookReadRecord {
 }
 
 export interface BookComment {
-    _id?: Nullable<string>;
-    book?: Nullable<string>;
-    readerName?: Nullable<string>;
-    title?: Nullable<string>;
-    comment?: Nullable<string>;
-    createTime?: Nullable<DateTime>;
+    _id: string;
+    book: string;
+    readerName: string;
+    title: string;
+    comment: string;
+    createTime: DateTime;
 }
 
 export interface BookWish {
-    _id?: Nullable<string>;
-    bookTitle?: Nullable<string>;
-    language?: Nullable<string>;
-    format?: Nullable<string>;
-    creator?: Nullable<string>;
-    createTime?: Nullable<DateTime>;
-    status?: Nullable<string>;
+    _id: string;
+    bookTitle: string;
+    language: string;
+    format: string;
+    creator: string;
+    createTime: DateTime;
+    status: string;
 }
 
 export interface BookInventory {
@@ -232,9 +232,9 @@ export interface Lib {
     password: string;
     email: string;
     role: string;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    phoneNumber?: Nullable<string>;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
     registerDate: DateTime;
     currentRefreshToken?: Nullable<string>;
     isActive: boolean;
@@ -242,12 +242,12 @@ export interface Lib {
 
 export interface ReaderProfile {
     _id: string;
-    firstName?: Nullable<string>;
-    lastName?: Nullable<string>;
-    gender?: Nullable<string>;
-    birthday?: Nullable<DateTime>;
-    phoneNumber?: Nullable<string>;
-    address?: Nullable<Address>;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    birthday: DateTime;
+    phoneNumber: string;
+    address: Address;
     readTimes: number;
     readDuration: number;
     score: number;
@@ -264,41 +264,41 @@ export interface Reader {
     registerDate: DateTime;
     currentRefreshToken?: Nullable<string>;
     favouriteBook?: Nullable<Nullable<FavouriteBook>[]>;
-    readerProfile?: Nullable<ReaderProfile>;
+    readerProfile: ReaderProfile;
     readHistory?: Nullable<Nullable<ReaderReadHistory>[]>;
 }
 
 export interface ReaderReadHistory {
-    _id?: Nullable<string>;
-    bookID?: Nullable<string>;
-    currentPage?: Nullable<number>;
-    startTime?: Nullable<DateTime>;
-    lastReadTime?: Nullable<DateTime>;
-    readTimes?: Nullable<number>;
-    readDuration?: Nullable<number>;
+    _id: string;
+    bookID: string;
+    currentPage: number;
+    startTime: DateTime;
+    lastReadTime: DateTime;
+    readTimes: number;
+    readDuration: number;
 }
 
 export interface FavouriteBook {
-    bookID?: Nullable<string>;
-    createDate?: Nullable<DateTime>;
+    bookID: string;
+    createDate: DateTime;
 }
 
 export interface Address {
-    homeAddress?: Nullable<string>;
-    province?: Nullable<string>;
-    postcode?: Nullable<string>;
+    homeAddress: string;
+    province: string;
+    postcode: string;
 }
 
 export interface AccessToken {
-    tokenInfo?: Nullable<string>;
+    tokenInfo: string;
 }
 
 export interface Token {
-    _id?: Nullable<string>;
-    readerName?: Nullable<string>;
-    email?: Nullable<string>;
-    token?: Nullable<string>;
-    createTime?: Nullable<DateTime>;
+    _id: string;
+    readerName: string;
+    email: string;
+    token: string;
+    createTime: DateTime;
 }
 
 export type DateTime = Date;

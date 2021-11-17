@@ -39,6 +39,7 @@
     "graphql": "^15.7.2",
     "graphql-tools": "^8.2.0",
     "helmet": "^4.6.0",
+    "moment": "^2.29.1",
     "mongoose": "^6.0.12",
     "nest-winston": "^1.6.1",
     "passport": "^0.4.1",

@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import * as bcrypt from 'bcrypt';
+import * as moment from 'moment';
 
 import { BookDocument } from '../book/schema/bookDoc';
 import {
@@ -54,11 +55,16 @@ export class ReaderService {
       gender: registerReaderDto.gender,
       firstName: registerReaderDto.firstName,
       lastName: registerReaderDto.lastName,
-      birthday: new Date(registerReaderDto.birthday),
+      birthday:
+        registerReaderDto.birthday === ''
+          ? new Date(0)
+          : new Date(registerReaderDto.birthday),
       phoneNumber: registerReaderDto.phoneNumber,
-      homeAddress: registerReaderDto.homeAddress,
-      province: registerReaderDto.province,
-      postcode: registerReaderDto.postcode,
+      address: {
+        homeAddress: registerReaderDto.homeAddress,
+        province: registerReaderDto.province,
+        postcode: registerReaderDto.postcode,
+      },
       securityQuestion: registerReaderDto.securityQuestion,
       securityAnswer: registerReaderDto.securityAnswer,
       readTimes: 0,
@@ -141,19 +147,25 @@ export class ReaderService {
         case 'username':
           break;
         case 'email':
-          if (updateReaderDto[item] !== '') {
+          if (updateReaderDto[item] !== reader[item]) {
             reader.email = updateReaderDto.email;
           }
           break;
         case 'birthday':
-          if (updateReaderDto[item] !== '') {
+          if (
+            updateReaderDto[item] !==
+            moment(readerProfile[item]).format('YYYY-MM-DD')
+          ) {
             readerProfile.birthday = new Date(updateReaderDto[item]);
           }
           break;
         default:
-          if (address.includes(item) && updateReaderDto[item] !== '') {
+          if (
+            address.includes(item) &&
+            updateReaderDto[item] !== readerProfile.address[item]
+          ) {
             readerProfile.address[item] = updateReaderDto[item];
-          } else if (updateReaderDto[item] !== '') {
+          } else if (updateReaderDto[item] !== readerProfile[item]) {
             readerProfile[item] = updateReaderDto[item];
           }
       }
