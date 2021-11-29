@@ -36,20 +36,20 @@ export interface GetWishlistInput {
 
 export interface BookInput {
     bookTitle: string;
-    isbnCode?: Nullable<string>;
+    isbnCode: string;
     category: string;
     format: string;
-    author?: Nullable<string>;
+    author: string;
     language: string;
-    publisher?: Nullable<string>;
-    publishDate?: Nullable<string>;
-    purchaseDate?: Nullable<string>;
+    publisher: string;
+    publishDate: string;
+    purchaseDate: string;
     coverPic: string;
     bookFile: string;
-    price?: Nullable<string>;
-    desc?: Nullable<string>;
-    keywords?: Nullable<string>;
-    initialScore?: Nullable<string>;
+    price: string;
+    desc: string;
+    keywords: string;
+    initialScore: string;
     creator: string;
     isActive: string;
 }
@@ -129,21 +129,22 @@ export interface UpdateReaderInput {
 export interface IQuery {
     sayHello(): Nullable<string> | Promise<Nullable<string>>;
     book(id: string): Nullable<Book> | Promise<Nullable<Book>>;
-    findAllBooks(format: string): Nullable<Nullable<Book>[]> | Promise<Nullable<Nullable<Book>[]>>;
-    searchBookList(searchBookData: SearchBookInput): Nullable<Nullable<Book>[]> | Promise<Nullable<Nullable<Book>[]>>;
-    searchBook(sval: string): Nullable<Nullable<Book>[]> | Promise<Nullable<Nullable<Book>[]>>;
-    findHotBooks(num: number): Nullable<Nullable<Book>[]> | Promise<Nullable<Nullable<Book>[]>>;
+    findAllBooks(format: string): Nullable<Book>[] | Promise<Nullable<Book>[]>;
+    searchBookList(searchBookData: SearchBookInput): Nullable<Book>[] | Promise<Nullable<Book>[]>;
+    searchBook(sval: string): Nullable<Book>[] | Promise<Nullable<Book>[]>;
+    findHotBooks(num: number): Book[] | Promise<Book[]>;
     sumBookInventory(): Nullable<BookInventory> | Promise<Nullable<BookInventory>>;
-    getReadHistory(bookID: string): Nullable<Nullable<BookReadRecord>[]> | Promise<Nullable<Nullable<BookReadRecord>[]>>;
-    getBookComments(bookID: string): Nullable<Nullable<BookComment>[]> | Promise<Nullable<Nullable<BookComment>[]>>;
-    getUnfulfilWishList(): Nullable<Nullable<BookWish>[]> | Promise<Nullable<Nullable<BookWish>[]>>;
-    getWishList(getWishData: GetWishlistInput): Nullable<Nullable<BookWish>[]> | Promise<Nullable<Nullable<BookWish>[]>>;
+    getReadHistory(bookID: string): Nullable<BookReadRecord>[] | Promise<Nullable<BookReadRecord>[]>;
+    getBookComments(bookID: string): Nullable<BookComment>[] | Promise<Nullable<BookComment>[]>;
+    getUnfulfilWishList(): Nullable<BookWish>[] | Promise<Nullable<BookWish>[]>;
+    getWishList(getWishData: GetWishlistInput): Nullable<BookWish>[] | Promise<Nullable<BookWish>[]>;
     getBookWish(wishID: string): Nullable<BookWish> | Promise<Nullable<BookWish>>;
     allLibrarians(): Nullable<Nullable<Lib>[]> | Promise<Nullable<Nullable<Lib>[]>>;
     allAdmins(): Nullable<Nullable<Lib>[]> | Promise<Nullable<Nullable<Lib>[]>>;
     lib(id: string): Nullable<Lib> | Promise<Nullable<Lib>>;
     reader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
-    allReaders(): Nullable<Nullable<Reader>[]> | Promise<Nullable<Nullable<Reader>[]>>;
+    allReaders(): Nullable<Reader>[] | Promise<Nullable<Reader>[]>;
+    topReaders(num: number): Nullable<Reader>[] | Promise<Nullable<Reader>[]>;
 }
 
 export interface IMutation {
@@ -164,6 +165,8 @@ export interface IMutation {
     registerReader(regReaderData: RegReaderInput): Nullable<Reader> | Promise<Nullable<Reader>>;
     updateReader(updateReaderData: UpdateReaderInput): Nullable<Reader> | Promise<Nullable<Reader>>;
     changeReaderPwd(changeReaderPwdData: ChangePwdInput): Nullable<Reader> | Promise<Nullable<Reader>>;
+    deaReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
+    actReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
     delReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
 }
 

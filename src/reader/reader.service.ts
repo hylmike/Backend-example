@@ -245,7 +245,7 @@ export class ReaderService {
         return null;
       }
     }
-    return reader.isActive;
+    return reader;
   }
 
   //Change the reader status from inactive to active
@@ -269,7 +269,7 @@ export class ReaderService {
         return null;
       }
     }
-    return reader.isActive;
+    return reader;
   }
 
   async delReader(readerID) {

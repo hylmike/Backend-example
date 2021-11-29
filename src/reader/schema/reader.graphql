@@ -63,12 +63,15 @@ type Token {
 
 type Query {
   reader(id: ID!): Reader
-  allReaders: [Reader]
+  allReaders: [Reader]!
+  topReaders(num: Int!): [Reader]!
 }
 
 type Mutation {
   registerReader(regReaderData: RegReaderInput!): Reader
   updateReader(updateReaderData: UpdateReaderInput!): Reader
   changeReaderPwd(changeReaderPwdData: ChangePwdInput!): Reader
+  deaReader(id: ID!): Reader
+  actReader(id: ID!): Reader
   delReader(id: ID!): Reader
 }

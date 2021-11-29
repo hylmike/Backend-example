@@ -52,8 +52,8 @@ import { LibModule } from './lib/lib.module';
       ],
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../..', 'uploadfiles'),
-      serveRoot: '/uploadfiles',
+      rootPath: join(__dirname, '../..', 'bookfiles'),
+      serveRoot: '/bookfiles',
       exclude: ['/api*'],
     }),
     ConfigModule.forRoot({

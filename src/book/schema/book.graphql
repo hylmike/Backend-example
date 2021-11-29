@@ -59,15 +59,15 @@ type BookInventory {
 
 type Query {
   book(id: ID!): Book
-  findAllBooks(format: String!): [Book]
-  searchBookList(searchBookData: SearchBookInput!): [Book]
-  searchBook(sval: String!): [Book]
-  findHotBooks(num: Int!): [Book]
+  findAllBooks(format: String!): [Book]!
+  searchBookList(searchBookData: SearchBookInput!): [Book]!
+  searchBook(sval: String!): [Book]!
+  findHotBooks(num: Int!): [Book!]!
   sumBookInventory: BookInventory
-  getReadHistory(bookID: ID!): [BookReadRecord]
-  getBookComments(bookID: ID!): [BookComment]
-  getUnfulfilWishList: [BookWish]
-  getWishList(getWishData: GetWishlistInput!): [BookWish]
+  getReadHistory(bookID: ID!): [BookReadRecord]!
+  getBookComments(bookID: ID!): [BookComment]!
+  getUnfulfilWishList: [BookWish]!
+  getWishList(getWishData: GetWishlistInput!): [BookWish]!
   getBookWish(wishID: ID!): BookWish
 }
 

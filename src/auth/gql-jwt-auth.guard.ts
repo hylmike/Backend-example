@@ -17,3 +17,11 @@ export class LibGqlJwtAuthGuard extends AuthGuard('lib-jwt') {
     return ctx.getContext().req;
   }
 }
+
+@Injectable()
+export class BothGqlJwtAuthGuard extends AuthGuard(['reader-jwt', 'lib-jwt']) {
+  getRequest(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req;
+  }
+}

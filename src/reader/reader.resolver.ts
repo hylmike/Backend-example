@@ -1,7 +1,10 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { ReaderGqlJwtAuthGuard } from '../auth/gql-jwt-auth.guard';
+import {
+  BothGqlJwtAuthGuard,
+  ReaderGqlJwtAuthGuard,
+} from '../auth/gql-jwt-auth.guard';
 import {
   Reader,
   RegReaderInput,
@@ -14,7 +17,7 @@ import { ReaderService } from './reader.service';
 export class ReaderResolver {
   constructor(private readonly readerService: ReaderService) {}
 
-  @UseGuards(ReaderGqlJwtAuthGuard)
+  @UseGuards(BothGqlJwtAuthGuard)
   @Query('reader')
   async getReader(@Args('id') id: string): Promise<Reader> {
     return this.readerService.getReader(id);
@@ -23,6 +26,11 @@ export class ReaderResolver {
   @Query('allReaders')
   async getAllReaders(): Promise<Reader[]> {
     return this.readerService.getAllReaders();
+  }
+
+  @Query('topReaders')
+  async getTopReaders(@Args('num') num: string): Promise<Reader[]> {
+    return this.readerService.getTopN(num);
   }
 
   @Mutation()
@@ -51,5 +59,15 @@ export class ReaderResolver {
   @Mutation()
   async delReader(@Args('id') id: string): Promise<Reader> {
     return this.readerService.delReader(id);
+  }
+
+  @Mutation()
+  async deaReader(@Args('id') id: string): Promise<Reader> {
+    return this.readerService.deaReader(id);
+  }
+
+  @Mutation()
+  async actReader(@Args('id') id: string): Promise<Reader> {
+    return this.readerService.actReader(id);
   }
 }
