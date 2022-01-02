@@ -8,7 +8,8 @@ import {
 import { AuthModule } from '../auth/auth.module';
 import { ReaderService } from './reader.service';
 import { ReaderResolver } from './reader.resolver';
-import { BookSchema } from '../mongoSchema/book.schema';
+import { BookCommentSchema, BookReadRecordSchema, BookSchema, BookWishSchema } from '../mongoSchema/book.schema';
+import { BookService } from 'src/book/book.service';
 
 @Module({
   imports: [

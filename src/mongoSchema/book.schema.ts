@@ -46,6 +46,33 @@ export const BookSchema = new mongoose.Schema({
   ],
 });
 
+export interface Book {
+  _id: string;
+  bookTitle: string;
+  isbnCode: string;
+  category: string;
+  format: string;
+  author: string;
+  language: string;
+  publisher: string;
+  publishDate: Date;
+  purchaseDate: Date;
+  price: number;
+  coverPic: string;
+  bookFile: string;
+  desc: string;
+  keywords: string;
+  isActive: boolean;
+  createDate: Date;
+  creator: string;
+  readTimes: number;
+  readDuration: number;
+  initialScore: number;
+  popularScore: number;
+  comments: [BookComment];
+  readHistory: [BookReadRecord];
+}
+
 export const BookReadRecordSchema = new mongoose.Schema({
   book: {
     type: mongoose.Schema.Types.ObjectId,
@@ -55,6 +82,14 @@ export const BookReadRecordSchema = new mongoose.Schema({
   startTime: Date,
   duration: Number, //unit:s
 });
+
+export interface BookReadRecord {
+  _id: string;
+  book: string;
+  readerID: string;
+  startTime: Date;
+  duration: number;
+}
 
 export const BookCommentSchema = new mongoose.Schema({
   book: {
@@ -67,6 +102,15 @@ export const BookCommentSchema = new mongoose.Schema({
   createTime: Date,
 });
 
+export interface BookComment {
+  _id: string;
+  book: string;
+  readerName: string;
+  title: string;
+  comment: string;
+  createTime: Date;
+}
+
 export const BookWishSchema = new mongoose.Schema({
   bookTitle: String,
   language: String,
@@ -76,6 +120,24 @@ export const BookWishSchema = new mongoose.Schema({
   createTime: Date,
   status: String, //Under Review, Approved, Fullfiled, Rejected
 });
+
+export interface BookWish {
+  _id: string;
+  bookTitle: string;
+  language: string;
+  format: string;
+  creator: string;
+  createTime: Date;
+  status: string;
+}
+
+export type BookDocument = Book & Document;
+
+export type BookReadRecordDoc = BookReadRecord & Document;
+
+export type BookCommentDoc = BookComment & Document;
+
+export type BookWishDoc = BookWish & Document;
 
 /*
 Politics --- General Politics

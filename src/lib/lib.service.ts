@@ -5,8 +5,8 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import * as bcrypt from 'bcrypt';
 
-import { LibDocument } from './schema/libDoc';
-import { ChangePwdInput, Lib, RegLibInput, UpdateLibInput } from '../graphql';
+import { Lib, LibDocument } from '../mongoSchema/lib.schema';
+import { ChangePwdInput, RegLibInput, UpdateLibInput } from '../graphql';
 
 @Injectable()
 export class LibService {

@@ -17,7 +17,7 @@ export interface BookCommentInput {
 export interface ReadRecordInput {
     bookID: string;
     readerID: string;
-    startTime: DateTime;
+    startTime: string;
     currentPage: number;
     duration: number;
 }
@@ -94,6 +94,11 @@ export interface ChangePwdInput {
     newPwd: string;
 }
 
+export interface FavorBookInput {
+    readerID: string;
+    bookID: string;
+}
+
 export interface RegReaderInput {
     username: string;
     password: string;
@@ -126,10 +131,37 @@ export interface UpdateReaderInput {
     securityAnswer: string;
 }
 
+export interface RegWorkshopInput {
+    topic: string;
+    place: string;
+    organizer: string;
+    startTime: string;
+    duration: string;
+    poster: string;
+    creator: string;
+    remark: string;
+}
+
+export interface SubWorkshopInput {
+    workshopID: string;
+    readerID: string;
+}
+
+export interface UpdateWorkshopInput {
+    id: string;
+    topic: string;
+    place: string;
+    organizer: string;
+    startTime: string;
+    duration: string;
+    poster: string;
+    remark: string;
+}
+
 export interface IQuery {
     sayHello(): Nullable<string> | Promise<Nullable<string>>;
     book(id: string): Nullable<Book> | Promise<Nullable<Book>>;
-    findAllBooks(format: string): Nullable<Book>[] | Promise<Nullable<Book>[]>;
+    findAllBooks(format: string): Book[] | Promise<Book[]>;
     searchBookList(searchBookData: SearchBookInput): Nullable<Book>[] | Promise<Nullable<Book>[]>;
     searchBook(sval: string): Nullable<Book>[] | Promise<Nullable<Book>[]>;
     findHotBooks(num: number): Book[] | Promise<Book[]>;
@@ -145,6 +177,11 @@ export interface IQuery {
     reader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
     allReaders(): Nullable<Reader>[] | Promise<Nullable<Reader>[]>;
     topReaders(num: number): Nullable<Reader>[] | Promise<Nullable<Reader>[]>;
+    favorBookList(id: string): Nullable<Book>[] | Promise<Nullable<Book>[]>;
+    workshop(id: string): Nullable<Workshop> | Promise<Nullable<Workshop>>;
+    getWorkshopList(num: number): Nullable<Workshop>[] | Promise<Nullable<Workshop>[]>;
+    getSubscriber(id: string): Nullable<Subscriber> | Promise<Nullable<Subscriber>>;
+    getSubWorkshops(readerID: string): Nullable<Workshop>[] | Promise<Nullable<Workshop>[]>;
 }
 
 export interface IMutation {
@@ -168,6 +205,13 @@ export interface IMutation {
     deaReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
     actReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
     delReader(id: string): Nullable<Reader> | Promise<Nullable<Reader>>;
+    addFavorBook(favorBookData: FavorBookInput): Nullable<Reader> | Promise<Nullable<Reader>>;
+    delFavorBook(favorBookData: FavorBookInput): Nullable<Reader> | Promise<Nullable<Reader>>;
+    regWorkshop(regWorkshopData: RegWorkshopInput): Nullable<Workshop> | Promise<Nullable<Workshop>>;
+    updateWorkshop(updateWorkshopData: UpdateWorkshopInput): Nullable<Workshop> | Promise<Nullable<Workshop>>;
+    delWorkshop(id: string): Nullable<Workshop> | Promise<Nullable<Workshop>>;
+    subWorkshop(subWorkshopData: SubWorkshopInput): Nullable<Subscriber> | Promise<Nullable<Subscriber>>;
+    unsubWorkshop(id: string): Nullable<Subscriber> | Promise<Nullable<Subscriber>>;
 }
 
 export interface Book {
@@ -193,8 +237,8 @@ export interface Book {
     readDuration: number;
     initialScore: number;
     popularScore: number;
-    comments?: Nullable<Nullable<string>[]>;
-    readHistory?: Nullable<Nullable<string>[]>;
+    comments: Nullable<BookComment>[];
+    readHistory: Nullable<BookReadRecord>[];
 }
 
 export interface BookReadRecord {
@@ -266,7 +310,7 @@ export interface Reader {
     isActive: boolean;
     registerDate: DateTime;
     currentRefreshToken?: Nullable<string>;
-    favouriteBook?: Nullable<Nullable<FavouriteBook>[]>;
+    favorBooks?: Nullable<Nullable<Book>[]>;
     readerProfile: ReaderProfile;
     readHistory?: Nullable<Nullable<ReaderReadHistory>[]>;
 }
@@ -279,11 +323,7 @@ export interface ReaderReadHistory {
     lastReadTime: DateTime;
     readTimes: number;
     readDuration: number;
-}
-
-export interface FavouriteBook {
-    bookID: string;
-    createDate: DateTime;
+    book?: Nullable<Book>;
 }
 
 export interface Address {
@@ -302,6 +342,28 @@ export interface Token {
     email: string;
     token: string;
     createTime: DateTime;
+}
+
+export interface Subscriber {
+    _id: string;
+    workshop: string;
+    readerID: string;
+    subscribeTime: DateTime;
+    reader?: Nullable<Reader>;
+}
+
+export interface Workshop {
+    _id: string;
+    topic: string;
+    place: string;
+    organizer: string;
+    subscriber: Nullable<Subscriber>[];
+    startTime: DateTime;
+    duration: number;
+    poster: string;
+    creator: string;
+    createTime: DateTime;
+    remark: string;
 }
 
 export type DateTime = Date;

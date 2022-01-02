@@ -4,8 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { Reader } from '../graphql';
-import { ReaderDocument } from '../reader/schema/readerDoc';
+import { Reader, ReaderDocument } from '../mongoSchema/reader.schema';
 import { Logger } from 'winston';
 
 @Injectable()

@@ -1,0 +1,10 @@
+input UpdateWorkshopInput {
+  id: ID!
+  topic: String!
+  place: String!
+  organizer: String!
+  startTime: String!
+  duration: String!
+  poster: String!
+  remark: String!
+}

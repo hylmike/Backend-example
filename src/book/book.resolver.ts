@@ -1,11 +1,14 @@
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
 import {
-  Book,
-  BookComment,
+  Args,
+  Resolver,
+  Query,
+  Mutation,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
+import {
   BookCommentInput,
   BookInput,
-  BookReadRecord,
-  BookWish,
   CreateWishInput,
   GetWishlistInput,
   ReadRecordInput,
@@ -13,9 +16,15 @@ import {
   UpdateWishInput,
   BookInventory,
 } from '../graphql';
+import {
+  Book,
+  BookWish,
+  BookComment,
+  BookReadRecord,
+} from '../mongoSchema/book.schema';
 import { BookService } from './book.service';
 
-@Resolver()
+@Resolver('Book')
 export class BookResolver {
   constructor(private readonly bookService: BookService) {}
 
@@ -77,10 +86,9 @@ export class BookResolver {
     return this.bookService.addReadRecord(recordData);
   }
 
-  @Query()
-  async getReadHistory(
-    @Args('bookID') bookID: string,
-  ): Promise<BookReadRecord[]> {
+  @ResolveField('readHistory')
+  async getReadHistory(@Parent() book: Book): Promise<BookReadRecord[]> {
+    const { _id: bookID } = book;
     return this.bookService.getReadHistory(bookID);
   }
 
@@ -91,10 +99,9 @@ export class BookResolver {
     return this.bookService.addBookComment(bookCommentData);
   }
 
-  @Query()
-  async getBookComments(
-    @Args('bookID') bookID: string,
-  ): Promise<BookComment[]> {
+  @ResolveField('comments')
+  async getBookComments(@Parent() book: Book): Promise<BookComment[]> {
+    const { _id: bookID } = book;
     return this.bookService.getBookComments(bookID);
   }
 

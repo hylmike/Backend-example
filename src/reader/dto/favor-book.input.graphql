@@ -1,0 +1,4 @@
+input FavorBookInput {
+  readerID: ID!
+  bookID: ID!
+}

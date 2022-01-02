@@ -1,0 +1,22 @@
+#Production configuration
+FROM node:16 AS production
+
+#Set node environment parameter
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Create app directory
+WORKDIR /usr/src/api
+
+COPY package*.json ./
+
+RUN npm install -g @nestjs/cli
+RUN npm ci --only=production
+
+COPY . .
+#COPY --from=development /usr/src/api/dist ./dist
+
+RUN npm run build
+
+#EXPOSE 4000
+CMD [ "node", "dist/main" ]

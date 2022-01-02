@@ -1,7 +1,7 @@
 input ReadRecordInput {
   bookID: ID!
   readerID: ID!
-  startTime: DateTime!
+  startTime: String!
   currentPage: Int!
   duration: Int!
 }

@@ -1,0 +1,4 @@
+input SubWorkshopInput {
+  workshopID: String!
+  readerID: String!
+}

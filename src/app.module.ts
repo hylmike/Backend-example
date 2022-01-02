@@ -16,6 +16,8 @@ import { ReaderModule } from './reader/reader.module';
 import { AuthModule } from './auth/auth.module';
 import { BookModule } from './book/book.module';
 import { LibModule } from './lib/lib.module';
+import { WorkshopModule } from './workshop/workshop.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { LibModule } from './lib/lib.module';
       cors: false,
       resolvers: { DateTime: GraphQLISODateTime },
       context: ({ req }) => ({ req }),
+      playground: true,
     }),
     WinstonModule.forRoot({
       level: 'info',
@@ -56,6 +59,11 @@ import { LibModule } from './lib/lib.module';
       serveRoot: '/bookfiles',
       exclude: ['/api*'],
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../..', 'otherfiles'),
+      serveRoot: '/otherfiles',
+      exclude: ['/api*'],
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -63,6 +71,8 @@ import { LibModule } from './lib/lib.module';
     AuthModule,
     BookModule,
     LibModule,
+    WorkshopModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [

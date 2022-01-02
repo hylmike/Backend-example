@@ -21,8 +21,8 @@ type Book {
   readDuration: Int!
   initialScore: Int!
   popularScore: Int!
-  comments: [String]
-  readHistory: [String]
+  comments: [BookComment]!
+  readHistory: [BookReadRecord]!
 }
 
 type BookReadRecord {
@@ -59,7 +59,7 @@ type BookInventory {
 
 type Query {
   book(id: ID!): Book
-  findAllBooks(format: String!): [Book]!
+  findAllBooks(format: String!): [Book!]!
   searchBookList(searchBookData: SearchBookInput!): [Book]!
   searchBook(sval: String!): [Book]!
   findHotBooks(num: Int!): [Book!]!

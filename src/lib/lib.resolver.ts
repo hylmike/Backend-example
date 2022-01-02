@@ -2,7 +2,8 @@ import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { LibGqlJwtAuthGuard } from 'src/auth/gql-jwt-auth.guard';
 
-import { ChangePwdInput, Lib, RegLibInput, UpdateLibInput } from '../graphql';
+import { ChangePwdInput, RegLibInput, UpdateLibInput } from '../graphql';
+import { Lib } from '../mongoSchema/lib.schema';
 import { LibService } from './lib.service';
 
 @Resolver()

@@ -18,6 +18,20 @@ export const WorkshopSchema = new mongoose.Schema({
   remark: String,
 });
 
+export interface Workshop {
+  _id: string;
+  topic: string;
+  place: string;
+  organizer: string;
+  subscriber: [Subscriber];
+  startTime: Date;
+  duration: number;
+  poster: string;
+  creator: string;
+  createTime: Date;
+  remark: string;
+}
+
 export const SubscriberSchema = new mongoose.Schema({
   workshop: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,5 +39,16 @@ export const SubscriberSchema = new mongoose.Schema({
   },
   readerID: String,
   //neighborhood: String,
-  SubscribeTime: Date,
+  subscribeTime: Date,
 });
+
+export interface Subscriber {
+  _id: string;
+  workshop: string;
+  readerID: string;
+  subscribeTime: Date;
+}
+
+export type WorkshopDocument = Workshop & mongoose.Document;
+
+export type SubscriberDocument = Subscriber & mongoose.Document;

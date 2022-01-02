@@ -1,5 +1,12 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 
 import {
   BothGqlJwtAuthGuard,
@@ -10,10 +17,13 @@ import {
   RegReaderInput,
   ChangePwdInput,
   UpdateReaderInput,
+  FavorBookInput,
+  ReaderReadHistory,
 } from '../graphql';
+import { Book } from '../mongoSchema/book.schema';
 import { ReaderService } from './reader.service';
 
-@Resolver()
+@Resolver('Reader')
 export class ReaderResolver {
   constructor(private readonly readerService: ReaderService) {}
 
@@ -69,5 +79,31 @@ export class ReaderResolver {
   @Mutation()
   async actReader(@Args('id') id: string): Promise<Reader> {
     return this.readerService.actReader(id);
+  }
+
+  @Mutation()
+  async addFavorBook(
+    @Args('favorBookData') favorBookData: FavorBookInput,
+  ): Promise<Reader> {
+    return this.readerService.addFavourBook(favorBookData);
+  }
+
+  @ResolveField('favorBooks')
+  async getFavorBookList(@Parent() reader: Reader): Promise<Book[]> {
+    const { _id: id } = reader;
+    return this.readerService.getFavourBookList(id);
+  }
+
+  @Mutation()
+  async delFavorBook(
+    @Args('favorBookData') favorBookData: FavorBookInput,
+  ): Promise<Reader> {
+    return this.readerService.delFavourBook(favorBookData);
+  }
+
+  @ResolveField('readHistory')
+  async getReadHistory(@Parent() reader: Reader): Promise<ReaderReadHistory[]> {
+    const { _id: readerID } = reader;
+    return this.readerService.getReadHistory(readerID);
   }
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
@@ -6,18 +6,20 @@ import { Logger } from 'winston';
 import * as bcrypt from 'bcrypt';
 import * as moment from 'moment';
 
-import { BookDocument } from '../book/schema/bookDoc';
 import {
-  Reader,
   RegReaderInput,
   UpdateReaderInput,
   ChangePwdInput,
+  FavorBookInput,
+  ReaderReadHistory,
 } from '../graphql';
 import {
+  Reader,
   ReaderDocument,
   ReaderProDocument,
   ReaderReadHisDocument,
-} from './schema/readerDoc';
+} from '../mongoSchema/reader.schema';
+import { Book, BookDocument } from '../mongoSchema/book.schema';
 
 @Injectable()
 export class ReaderService {
@@ -293,111 +295,161 @@ export class ReaderService {
     }
   }
 
-  // async addFavourBook(readerID: string, favourBookDto: FavourBookDto) {
-  //   const reader = await this.readerModel.findById(readerID);
-  //   if (!reader) {
-  //     this.logger.warn(
-  //       `Can not find the reader ${readerID} when adding favourite book`,
-  //     );
-  //     return -1;
-  //   }
-  //   const favouriteBookList = reader.favouriteBook.map((item) => item.bookID);
-  //   if (favouriteBookList.includes(favourBookDto.bookID)) {
-  //     this.logger.warn('The book is already in the favourite list');
-  //     return 0;
-  //   }
-  //   const now = new Date();
-  //   reader.favouriteBook.push({
-  //     bookID: favourBookDto.bookID,
-  //     createDate: now,
-  //   });
-  //   try {
-  //     await reader.save();
-  //     this.logger.info(
-  //       `Successfully adding favourite book for reader ${reader.username}`,
-  //     );
-  //     return reader.favouriteBook.length;
-  //   } catch (err) {
-  //     this.logger.error(`Saving favourite book failed for ${readerID}: ${err}`);
-  //     return -1;
-  //   }
-  // }
+  async addFavourBook(favorBookInput: FavorBookInput) {
+    const reader = await this.readerModel.findById(favorBookInput.readerID);
+    if (!reader) {
+      this.logger.warn(
+        `Can not find the reader ${favorBookInput.readerID} when adding favourite book`,
+      );
+      throw new HttpException(
+        "Can't find the reader when adding favorite book",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const favouriteBookList = reader.favouriteBook.map((item) => item.bookID);
+    if (favouriteBookList.includes(favorBookInput.bookID)) {
+      this.logger.warn('The book is already in the favourite list');
+      throw new HttpException(
+        'The book is already in the favor list',
+        HttpStatus.CONFLICT,
+      );
+    }
+    const now = new Date();
+    reader.favouriteBook.push({
+      bookID: favorBookInput.bookID,
+      createDate: now,
+    });
+    try {
+      await reader.save();
+      this.logger.info(
+        `Successfully adding favor book for reader ${reader.username}`,
+      );
+      return reader;
+    } catch (err) {
+      this.logger.error(
+        `Saving favourite book failed for ${reader._id}: ${err}`,
+      );
+      throw new HttpException(
+        `Failed to save favourite book: ${err}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 
-  // async getFavourBookList(readerID: string): Promise<Book[]> {
-  //   const reader = await this.readerModel.findById(readerID);
-  //   if (!reader) {
-  //     this.logger.warn(
-  //       `Can not find the reader ${readerID} when getting favourite booklist`,
-  //     );
-  //     return null;
-  //   } else {
-  //     //Got book for each favour book ID
-  //     const favorBookList: Book[] = [];
-  //     for (const item of reader.favouriteBook) {
-  //       const book = await this.bookModel.findById(item.bookID);
-  //       if (book) favorBookList.push(book);
-  //     }
-  //     //Create log for this activity
-  //     this.logger.info(
-  //       `Success get favourite book list for reader ${readerID}`,
-  //     );
-  //     return favorBookList;
-  //   }
-  // }
+  async getFavourBookList(readerID: string): Promise<Book[]> {
+    const reader = await this.readerModel.findById(readerID);
+    if (!reader) {
+      this.logger.warn(
+        `Can not find the reader ${readerID} when getting favourite booklist`,
+      );
+      throw new HttpException(
+        "Can't find reader when get favor booklist",
+        HttpStatus.NOT_FOUND,
+      );
+    } else {
+      //Got book for each favour book ID
+      const favorBookList: Book[] = [];
+      for (const item of reader.favouriteBook) {
+        const book = await this.bookModel.findById(item.bookID);
+        if (book) favorBookList.push(book);
+      }
+      //Create log for this activity
+      this.logger.info(
+        `Success get favourite book list for reader ${readerID}`,
+      );
+      return favorBookList;
+    }
+  }
 
-  // async delFavourBook(readerID: string, favourBookDto: FavourBookDto) {
-  //   const reader = await this.readerModel.findById(readerID);
-  //   if (!reader) {
-  //     this.logger.warn(
-  //       `Can not find the reader ${readerID} when deleting favourite book`,
-  //     );
-  //     return -1;
-  //   }
-  //   for (const record of reader.favouriteBook) {
-  //     if (record.bookID == favourBookDto.bookID) {
-  //       const index = reader.favouriteBook.indexOf(record);
-  //       reader.favouriteBook.splice(index, 1);
-  //       await reader.save();
-  //       //Create log for this activity
-  //       this.logger.info(
-  //         `Success delete favourbook ${favourBookDto.bookID} for reader ${reader.username}`,
-  //       );
-  //       return index;
-  //     }
-  //   }
-  //   this.logger.warn(
-  //     `The book ${favourBookDto.bookID} is not in the favourite list`,
-  //   );
-  //   return -1;
-  // }
+  async delFavourBook(favorBookInput: FavorBookInput) {
+    const reader = await this.readerModel.findById(favorBookInput.readerID);
+    if (!reader) {
+      this.logger.warn(
+        `Can not find the reader ${favorBookInput.readerID} when deleting favourite book`,
+      );
+      throw new HttpException(
+        "Can't find reader when deleting favor book",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    for (const record of reader.favouriteBook) {
+      if (record.bookID == favorBookInput.bookID) {
+        const index = reader.favouriteBook.indexOf(record);
+        reader.favouriteBook.splice(index, 1);
+        await reader.save();
+        //Create log for this activity
+        this.logger.info(
+          `Success delete favourbook ${favorBookInput.bookID} for reader ${reader.username}`,
+        );
+        return reader;
+      }
+    }
+    this.logger.warn(
+      `The book ${favorBookInput.bookID} is not in the favor list`,
+    );
+    throw new HttpException(
+      'The book is not in the favor list',
+      HttpStatus.NOT_FOUND,
+    );
+  }
 
-  // async getReadBooks(readerID): Promise<Book[]> {
-  //   const reader = await this.readerModel.findById(readerID);
-  //   if (!reader) {
-  //     this.logger.warn('Can not find the reader when get reader read history');
-  //     return null;
-  //   } else {
-  //     //Translate readerHistory into read book list
-  //     const readBookList: Book[] = [];
-  //     for (const item of reader.readHistory) {
-  //       const book = await this.bookModel.findById(item.bookID);
-  //       if (book) readBookList.push(book);
-  //     }
-  //     //Create log for this activity
-  //     this.logger.info(`Success get read booklist for reader ${reader.username}`);
-  //     return readBookList;
-  //   }
-  // }
+  async getReadBooks(readerID): Promise<Book[]> {
+    const reader = await this.readerModel.findById(readerID);
+    if (!reader) {
+      this.logger.warn('Can not find the reader when get reader read history');
+      return null;
+    } else {
+      //Translate readerHistory into read book list
+      const readBookList: Book[] = [];
+      for (const item of reader.readHistory) {
+        const book = await this.bookModel.findById(item.bookID);
+        if (book) readBookList.push(book);
+      }
+      //Create log for this activity
+      this.logger.info(
+        `Success get read booklist for reader ${reader.username}`,
+      );
+      return readBookList;
+    }
+  }
 
-  // async getReadHistory(readerID): Promise<ReaderReadHistory[]> {
-  //   const reader = await this.readerModel.findById(readerID);
-  //   if (!reader) {
-  //     this.logger.warn('Can not find the reader when get reader read history');
-  //     return null;
-  //   }
-  //   this.logger.info(`Success get reader ${readerID} read history`);
-  //   return reader.readHistory;
-  // }
+  async getReadHistory(readerID): Promise<ReaderReadHistory[]> {
+    const reader = await this.readerModel.findById(readerID);
+    if (!reader) {
+      this.logger.warn('Can not find the reader when get reader read history');
+      return null;
+    }
+    const readHistory = await Promise.all(
+      reader.readHistory.map(async (record) => {
+        const book = await this.findBook(record.bookID);
+        return {
+          _id: record._id,
+          bookID: record.bookID,
+          currentPage: record.currentPage,
+          startTime: record.startTime,
+          lastReadTime: record.lastReadTime,
+          readTimes: record.readTimes,
+          readDuration: record.readDuration,
+          book: book,
+        };
+      }),
+    );
+    this.logger.info(`Success get reader ${readerID} read history`);
+    return readHistory;
+  }
+
+  async findBook(bookID): Promise<Book> {
+    const book = await this.bookModel.findById(bookID);
+    if (book) {
+      this.logger.info(`Success get book ${book.bookTitle}`);
+      return book;
+    } else {
+      throw new HttpException(
+        "Can't find book in database",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
 
   // async delReadHistory(readerID) {
   //   const reader = await this.readerModel.findById(readerID);

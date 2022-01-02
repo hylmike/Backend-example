@@ -23,7 +23,7 @@ type Reader {
   isActive: Boolean!
   registerDate: DateTime!
   currentRefreshToken: String
-  favouriteBook: [FavouriteBook]
+  favorBooks: [Book]
   readerProfile: ReaderProfile!
   readHistory: [ReaderReadHistory]
 }
@@ -36,11 +36,7 @@ type ReaderReadHistory {
   lastReadTime: DateTime!
   readTimes: Int!
   readDuration: Int!
-}
-
-type FavouriteBook {
-  bookID: ID!
-  createDate: DateTime!
+  book: Book
 }
 
 type Address {
@@ -65,6 +61,7 @@ type Query {
   reader(id: ID!): Reader
   allReaders: [Reader]!
   topReaders(num: Int!): [Reader]!
+  favorBookList(id: ID!): [Book]!
 }
 
 type Mutation {
@@ -74,4 +71,6 @@ type Mutation {
   deaReader(id: ID!): Reader
   actReader(id: ID!): Reader
   delReader(id: ID!): Reader
+  addFavorBook(favorBookData: FavorBookInput!): Reader
+  delFavorBook(favorBookData: FavorBookInput!): Reader
 }

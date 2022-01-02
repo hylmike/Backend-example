@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { Document } from 'mongoose';
 
 export const LibSchema = new mongoose.Schema({
   username: {
@@ -20,6 +21,21 @@ export const LibSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: true },
 });
 
+export interface Lib {
+  _id: string;
+  username: string;
+  password: string;
+  role: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  registerDate: Date;
+  creator: string;
+  currentRefreshToken: string;
+  isActive: boolean;
+}
+
 export const OperationLogSchema = new mongoose.Schema({
   operator: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,3 +45,5 @@ export const OperationLogSchema = new mongoose.Schema({
   operation: String,
   details: String,
 });
+
+export type LibDocument = Lib & Document;

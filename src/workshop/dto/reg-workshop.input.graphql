@@ -1,0 +1,10 @@
+input RegWorkshopInput {
+  topic: String!
+  place: String!
+  organizer: String!
+  startTime: String!
+  duration: String!
+  poster: String!
+  creator: String!
+  remark: String!
+}

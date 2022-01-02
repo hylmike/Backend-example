@@ -5,30 +5,30 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 import {
-  Book,
-  BookComment,
   BookCommentInput,
   BookInput,
   BookInventory,
-  BookReadRecord,
-  BookWish,
   CreateWishInput,
   GetWishlistInput,
-  ReaderReadHistory,
   ReadRecordInput,
   SearchBookInput,
   UpdateWishInput,
 } from '../graphql';
 import {
-  ReaderDocument,
-  ReaderReadHisDocument,
-} from '../reader/schema/readerDoc';
-import {
+  Book,
+  BookReadRecord,
+  BookComment,
+  BookWish,
   BookCommentDoc,
   BookDocument,
   BookReadRecordDoc,
   BookWishDoc,
-} from './schema/bookDoc';
+} from '../mongoSchema/book.schema';
+import {
+  ReaderDocument,
+  ReaderReadHisDocument,
+  ReaderReadHistory,
+} from '../mongoSchema/reader.schema';
 
 @Injectable()
 export class BookService {
@@ -340,7 +340,7 @@ export class BookService {
     const w2 = Number(process.env.SCORE_W2); //default is 1
     const bookID = readRecordDto.bookID;
     const readerID = readRecordDto.readerID;
-    const startTime = readRecordDto.startTime;
+    const startTime = new Date(readRecordDto.startTime);
     const currentPage = readRecordDto.currentPage;
     const duration = readRecordDto.duration;
     //Only consider read duration longer than SCORE_TIME_THRESHOLD (default:60s) as valid reading

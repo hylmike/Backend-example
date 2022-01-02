@@ -2,7 +2,8 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import 'dotenv/config';
-import { Reader, Lib } from '../graphql';
+import { Lib } from '../mongoSchema/lib.schema';
+import { Reader } from '../mongoSchema/reader.schema';
 import { ReaderAuthService } from './readerAuth.service';
 import { LibAuthService } from './libAuth.service';
 

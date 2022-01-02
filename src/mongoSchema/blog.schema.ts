@@ -8,3 +8,15 @@ export const BlogSchema = new mongoose.Schema({
   createTime: { type: Date, index: true },
   keywords: String,
 });
+
+export interface Blog {
+  _id: string;
+  topic: string;
+  category: string;
+  creator: string;
+  content: string;
+  createTime: Date;
+  keywords: string;
+}
+
+export type BlogDocument = Blog & mongoose.Document;

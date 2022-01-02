@@ -1,0 +1,36 @@
+type Subscriber {
+  _id: ID!
+  workshop: String!
+  readerID: String!
+  subscribeTime: DateTime!
+  reader: Reader
+}
+
+type Workshop {
+  _id: ID!
+  topic: String!
+  place: String!
+  organizer: String!
+  subscriber: [Subscriber]!
+  startTime: DateTime!
+  duration: Int!
+  poster: String!
+  creator: String!
+  createTime: DateTime!
+  remark: String!
+}
+
+type Query {
+  workshop(id: ID!): Workshop
+  getWorkshopList(num: Int!): [Workshop]!
+  getSubscriber(id: ID!): Subscriber
+  getSubWorkshops(readerID: ID!): [Workshop]!
+}
+
+type Mutation {
+  regWorkshop(regWorkshopData: RegWorkshopInput!): Workshop
+  updateWorkshop(updateWorkshopData: UpdateWorkshopInput!): Workshop
+  delWorkshop(id: ID!): Workshop
+  subWorkshop(subWorkshopData: SubWorkshopInput!): Subscriber
+  unsubWorkshop(id: ID!): Subscriber
+}
